@@ -1,33 +1,68 @@
-/* Вывод блоков Вывод пользователей и их фото*/
+function getUsersNames(userData) {
+   fetch('https://jsonplaceholder.typicode.com/users')
+      .then((data) => {
+         return data.json();
+      })
+      .then((data) => {
+         userData(data)  
+      })
+}
 
-async function getUsersInformation() {
+let usersList;
 
-   let usersInformation = await fetch('https://jsonplaceholder.typicode.com/users')
-   let usersPhoto = await fetch('https://jsonplaceholder.typicode.com/photos')
+function renderUser(userData) {
+   const userDiv = document.createElement('div');  
 
-   let information = await usersInformation.json()
-   let photo = await usersPhoto.json()
+   userDiv.classList.add('users__name');
 
-   photo = photo.splice(0, 10)
+   userDiv.innerText = userData.name;
 
-   let usersList = document.querySelector('.users__list')
+   userDiv.setAttribute('data-key', userData.id);
 
-   const conctPhotoInfotmation = information.concat(photo);
+   return userDiv; 
+}
 
-   for ( let key in conctPhotoInfotmation ) {
+function showList(data) {
+   usersList = document.querySelector('.users__list');
 
-      usersList.innerHTML += `
-      <div class="users__body">
-         <div class="users__photo">
-         <img src="${photo[key].thumbnailUrl}">
-         </div> 
-         <a href="index2.html" class="users__name">${information[key].name}</a>
-      </div> 
-      `
+   for (let names of data) {
+      let userBody = document.createElement('div');
+      userBody.classList.add('user__body');
+      userBody.append(renderUser(names));
+      usersList.append(userBody);
    }
 }
 
+getUsersNames(showList);
 
-getUsersInformation()
 
-/* Вывод блоков Вывод пользователей и их фото*/
+
+ document.addEventListener('click', ready); 
+
+let userName;
+
+function ready() {
+   userBody = document.querySelectorAll('.user__body');
+
+   for (let i = 0; i < userBody.length; i++) {
+      let button = userBody[i];
+      button.addEventListener('click', showIcon);
+   }
+}
+
+function showIcon() {
+
+      let userIcon = document.querySelector('.users__icon');
+      if (userIcon) { 
+         userIcon.remove();
+      } else {  
+         userIcon = document.createElement('div');
+         userIcon.classList.add('users__icon'); 
+         userIcon.innerHTML = 'Сюда нужна автарка с сервера, но ее пока нет((';     
+      }
+      this.append(userIcon);
+} 
+
+      
+document.addEventListener('click', ready);  
+
