@@ -11,22 +11,22 @@ function getUsersNames(userData) {
 let usersList;
 
 function renderUser(userData) {
-   const userDiv = document.createElement('div');  
+   const userName = document.createElement('div');  
 
-   userDiv.classList.add('users__name');
+   userName.classList.add('users__name');
 
-   userDiv.innerText = userData.name;
+   userName.innerText = userData.name;
 
-   userDiv.setAttribute('data-key', userData.id);
-
-   return userDiv; 
+   return userName; 
 }
+
+let userBody;
 
 function showList(data) {
    usersList = document.querySelector('.users__list');
 
    for (let names of data) {
-      let userBody = document.createElement('div');
+      userBody = document.createElement('div');
       userBody.classList.add('user__body');
       userBody.append(renderUser(names));
       usersList.append(userBody);
@@ -35,34 +35,44 @@ function showList(data) {
 
 getUsersNames(showList);
 
+function getUsersIcon(userData) {
+   fetch('https://jsonplaceholder.typicode.com/photos')
+      .then((data) => {
+         return data.json();
+      })
+      .then((data) => {
+         userData(data)
+      })
+}
 
-
- document.addEventListener('click', ready); 
-
-let userName;
-
-function ready() {
+function ready(data) {
    userBody = document.querySelectorAll('.user__body');
-
+   
    for (let i = 0; i < userBody.length; i++) {
       let button = userBody[i];
-      button.addEventListener('click', showIcon);
+      button.addEventListener('click', () => {
+         let userIcon = document.querySelector('.users__icon');
+         if (userIcon) { 
+            userIcon.remove();
+         } else {  
+            userIcon = document.createElement('div');
+            userIcon.classList.add('users__icon');  
+
+            let icons = data.splice(0, 1); 
+               for (let icon of icons) {
+                  userIcon.append(renderIcon(icon)); 
+                  }  
+            } 
+         button.append(userIcon);                   
+      });
    }
 }
 
-function showIcon() {
+function renderIcon(userData) {
+      let iconImg = document.createElement('img');  
+      iconImg.src = userData.thumbnailUrl;
+      return iconImg;  
+}
 
-      let userIcon = document.querySelector('.users__icon');
-      if (userIcon) { 
-         userIcon.remove();
-      } else {  
-         userIcon = document.createElement('div');
-         userIcon.classList.add('users__icon'); 
-         userIcon.innerHTML = 'Сюда нужна автарка с сервера, но ее пока нет((';     
-      }
-      this.append(userIcon);
-} 
-
-      
-document.addEventListener('click', ready);  
+document.addEventListener('click', () => getUsersIcon(ready)); 
 
