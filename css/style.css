@@ -73,121 +73,190 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Обнуление стилей */
 
-.main {
- background-color:white;
- display: flex;
- flex-direction: column;
- height: 100%;
+.app {
+  min-height: 100%;
+  font-family: 'Roboto', sans-serif;
+  position: relative;
+  display: grid;
+  grid-template: minmax(120px, auto) 1fr minmax(100px, auto) / 1fr;
+  grid-template-areas:"Header"
+                      "Main"
+                      "Footer";
 }
-
-/* Стили header */
 
 .header {
- padding: 40px 0px;
- background-color: #5fb8b4;
- flex: 0 1 auto;
-}
-
-.header .container {
- max-width: 1100px;
- margin: 0 auto;
-}
-
-.header__row {
- display: flex;
- justify-content: space-between;
- align-items: center;
+  background-color: RGB(244,243,241);
+  display: grid;
+  grid-template: 1fr / 1fr 1200px 1fr;
+  grid-area: Header;
 }
 
 .header__logo {
- font-size: 32px;
- color: white;
- letter-spacing: 1px;
- font-family: 'Lemonada', cursive;
- text-shadow: -3px 3px 3px rgb(39, 37, 38);
- border-radius: 50%;
- background-color: #2d9c97;
- box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
- padding: 25px;
+  grid-column: 2 / 3;
 }
-
-.header__link {
- font-size: 32px;
- color: white;
- letter-spacing: 2px;
- font-family: 'Lemonada', cursive;
- text-shadow: -3px 3px 3px rgb(248, 231, 234);
-}
-
-/* Стили header */
-
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-/* Стили фото и имени пользователя*/
 
 .users {
- padding: 70px 0px;
- flex: 1 1 100%;
+  grid-area: Main;
+  display: grid;
+  grid-template: 1fr / 1fr 300px 900px 1fr;
 }
 
-.users__list {
- max-width: 500px;
- margin: 0 auto;
+.user__body{
+  position: relative;
+  grid-column: 2 / 3;
 }
 
-.users__body {
- display: flex;
- margin: 0px auto 25px auto;
- font-size: 33px;
+.user__name{
+  background-color: fff#;
+  color: #333;
+  padding: 26px 40px;
+  font-weight: 500;
+  font-size: 18px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  transition: all 0.25s ease;  
 }
 
-.users__icon {
- font-size: 25px;
- color: black;
- text-align: center;
- font-family: 'Lemonada', cursive;
- margin: 0px 0px 30px 0px;
+.active.user__name {
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  box-shadow: 0px 0px 0px rgba(0,0,0,0.0);
 }
 
-.users__icon img {
- border-radius: 50%;
+.user__name:hover {
+  box-shadow: 0px 4px 7px rgba(0,0,0,0.07);
 }
 
-.users__name {
- height: 44px;
- line-height: 44px;
- font-size: 18px;
- color: white;
- background-color: #5fb8b4;
- border-radius: 35px;
- text-align: center;
- text-transform: uppercase;
- letter-spacing: 5px;
- font-family: 'Lemonada', cursive;
- padding: 0 28px;
- margin: 0px 0px 30px 0px;
- box-shadow: 0px 5px 1px rgba(0, 0, 0, 0.5);
+.active.user__name:hover {
+  box-shadow: 0px 0px 0px rgba(0,0,0,0.0);
 }
 
-.users__name:active {
- box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.5);
- position: relative;
- top: 3px;
+.user__information {
+  padding: 40px 0 0 0;
 }
+
+.user__information div {
+  font-size: 16px;
+  margin: 0px 0px 30px 0px;
+  font-weight: 300;
+}
+
+.user__information div span {
+  font-weight: 400;
+}
+
+/* Бургер */
+
+.bread-crumbs {
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: rgb(255, 255, 255);
+  text-align: center;
+  line-height: 60px;
+  font-size: 20px;
+  color: black;
+  width: 100px;
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  font-family: 'Roboto', sans-serif;
+  grid-column: 2 / 3;
+  position: relative;
+  transition: all 0.25s ease;  
+}
+
+
+.bread-crumbs:after {
+  content: "";  
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  border-left: 30px solid rgb(255, 255, 255);
+  position: absolute;
+  right: -30px;
+  bottom: 0;
+  z-index: 1;
+}
+
+.active.bread-crumbs span {
+  display: block;
+  transform: rotate(-180deg);
+}
+
+.active.bread-crumbs {
+  background: rgb(152, 151, 165);
+  transform: rotate(180deg);
+  left: 30px;
+  transition: all 0.25s ease;  
+}
+
+.active.bread-crumbs:after {
+  border-left: 30px solid  rgb(152, 151, 165);
+}
+
+.bread-crumbs:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+/* Бургер */
+
+/* Альбомы */
+
+.user__albums {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+  border-left: 1px solid rgb(236, 236, 245);
+  border-right: 1px solid rgb(236, 236, 245);
+  box-shadow: 0px 1px 2px rgba(0,0,0,0.1);
+  grid-column: 3 / 4;
+}
+
+.user__album {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.user__albums_title {
+  padding: 20px;
+  border: 1px solid rgb(236, 236, 245);
+  width: 350px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.user__albums_title:hover {
+  font-size: 15px;
+  transition: all 0.7s ease;
+  box-shadow: 0px 4px 7px rgba(0,0,0,0.07); 
+}
+
+/* Альбомы */
+
+/* Footer */
 
 .footer {
- flex: 0 1 auto;
- height: 70px;
- background-color: #5fb8b4;
+  grid-area: Footer;
+  background-color: RGB(244,243,241);
 }
 
 .footer__text {
- color: white;
- font-family: 'Lemonada', cursive;
- text-align: center;
- line-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 100px;
 }
+
+/* Footer */
