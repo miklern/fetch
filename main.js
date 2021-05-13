@@ -2,7 +2,7 @@ const app = document.querySelector(".app");
 
 /* Создание header  */
 
-function createHeader() {
+function renderHeader() {
   const headerContainer = document.createElement('div');
   headerContainer.classList.add('header');
   headerContainer.append(createBreadCrumbs());
@@ -137,48 +137,42 @@ async function renderUsersInfo(userInfo) {
 
   let infoContainer = document.querySelector(".user__information");
 
-  if (infoContainer) {
-    infoContainer.remove();
-  } 
-  infoContainer = document.createElement('div');
+  if (!infoContainer) {
+    infoContainer = document.createElement('div');
     infoContainer.classList.add('user__information');
 
-    if (userInfo) {
-      for (const info of userInfo) {
-        infoContainer.innerHTML = `
-                                  <div><span>Username:</span> ${info.username}</div>
-                                  <div><span>Email:</span> ${info.email}</div>
-                                  <div><span>Street:</span> ${info.address.street}</div>
-                                  <div><span>Suite:</span> ${info.address.suite}</div>
-                                  <div><span>City:</span> ${info.address.city}</div>
-                                  <div><span>Phone:</span> ${info.phone}</div>
-                                  <div><span>Website:</span> ${info.website}</div>
-                                  `;
-      } 
-    }
+    console.log(userInfo)
+
+    infoContainer.innerHTML = `
+                              <div><span>Username:</span> ${userInfo[0].username}</div>
+                              <div><span>Email:</span> ${userInfo[0].email}</div>
+                              <div><span>Street:</span> ${userInfo[0].address.street}</div>
+                              <div><span>Suite:</span> ${userInfo[0].address.suite}</div>
+                              <div><span>City:</span> ${userInfo[0].address.city}</div>
+                              <div><span>Phone:</span> ${userInfo[0].phone}</div>
+                              <div><span>Website:</span> ${userInfo[0].website}</div>
+                              `;
+  } 
   return infoContainer;
 }
 
 function usersInfo() {
-  const userName = document.querySelectorAll('.user__name');
+  const userBody = document.querySelector('.user__body');
 
-   for (let i = 0; i < userName.length; i++) {
-      let button = userName[i];
-      button.addEventListener('click', async function ()  {   
-        this.classList.add('active');
+  userBody.addEventListener('click', async function (event)  {   
+      event.target.classList.add('active');
 
-        const crumb = document.querySelector('.bread-crumbs');
-        crumb.classList.add('active');
+      const crumb = document.querySelector('.bread-crumbs');
+      crumb.classList.add('active');
 
-        const atr = this.getAttribute('data-id');
-        const info = await serverAPI.fetchUserInfo(atr);
-        this.append(await renderUsersInfo(info));
+      const userId = event.target.getAttribute('data-id');
+      const info = await serverAPI.fetchUserInfo(userId);
+      event.target.append(await renderUsersInfo(info));
 
-        const users = document.querySelector('.users');
-        const albums = await serverAPI.fetchUserAlbums(atr);
-        users.append(await renderUserAlbums(albums));
-      });
-   }
+      const users = document.querySelector('.users');
+      const albums = await serverAPI.fetchUserAlbums(userId);
+      users.append(await renderUserAlbums(albums));
+    });
 }
 
 /* Создание блоков информации пользователя */
@@ -190,9 +184,7 @@ async function renderUserAlbums(userAlbums) {
 
   let albumsContainer = document.querySelector(".user__albums");
 
-  if (albumsContainer) {
-    albumsContainer.remove();
-  } 
+  if (!albumsContainer) {
     albumsContainer = document.createElement('div');
     albumsContainer.classList.add('user__albums');
 
@@ -201,7 +193,7 @@ async function renderUserAlbums(userAlbums) {
         albumsContainer.append(renderUserAlbum(album));
       } 
     }
-   
+  } 
   return albumsContainer; 
 }
 
@@ -224,7 +216,7 @@ function renderUserAlbum(album) {
 
 /* Создание footer  */
 
-function createFooter() {
+function renderFooter() {
   const footerContainer = document.createElement('div');
   footerContainer.classList.add('footer');
 
@@ -246,19 +238,16 @@ async function onDocumentLoaded() {
   const users = await serverAPI.fetchUsers();
 
   renderUsers(users);
+  usersInfo();
+  renderHeader(); 
+  renderFooter();
 }
 
 if (document.readyState !== "loading") {
-  createHeader(); 
   onDocumentLoaded();
-  usersInfo();
-  createFooter();
 } else {
   document.addEventListener("DOMContentLoaded", async function () {
-    createHeader();
     await onDocumentLoaded();
-    await usersInfo();
-    createFooter();
   });
 }
 
