@@ -157,22 +157,46 @@ async function renderUsersInfo(userInfo) {
 }
 
 function usersInfo() {
+
   const userBody = document.querySelector('.user__body');
 
-  userBody.addEventListener('click', async function (event)  {   
-      event.target.classList.add('active');
+ 
 
+  userBody.addEventListener('click', async function (event)  {  
+
+      event.target.classList.add('active');
       const crumb = document.querySelector('.bread-crumbs');
+
       crumb.classList.add('active');
 
+      getUsersInfo(event);
+                          
+      getUsersAlbums(event);
+
+    });
+
+}
+
+async function getUsersInfo(event) {
+
       const userId = event.target.getAttribute('data-id');
+
       const info = await serverAPI.fetchUserInfo(userId);
+
       event.target.append(await renderUsersInfo(info));
 
+}
+
+async function getUsersAlbums(event) {
+
+      const userId = event.target.getAttribute('data-id');
+
       const users = document.querySelector('.users');
+
       const albums = await serverAPI.fetchUserAlbums(userId);
+
       users.append(await renderUserAlbums(albums));
-    });
+
 }
 
 /* Создание блоков информации пользователя */
