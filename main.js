@@ -18,17 +18,35 @@ function createBreadCrumbs() {
   return crumb;
 }
 
-function removeActiveClass() { 
-  const activeCrumb = document.querySelector('.bread-crumbs.active'); 
+function removeActiveClass() {
+  removeActiveCrumb();
+  removeActiveName();
+  removeUserContainer();
+  removeUserAlbums();
+}
+
+function removeActiveCrumb() {
+  const activeCrumb = document.querySelector('.bread-crumbs.active');
+  activeCrumb.classList.remove('active');
+  return activeCrumb;
+}
+
+function removeActiveName() {
   const activeName = document.querySelector('.user__name.active');
+  activeName.classList.remove('active');
+  return activeName;
+}
+
+function removeUserContainer() {
   const userContainer =  document.querySelector('.user__information');
+  userContainer.remove();
+  return userContainer;
+}
+
+function removeUserAlbums() {
   const userAlbums = document.querySelector('.user__albums');
-  if (activeCrumb === this) {
-    activeCrumb.classList.remove('active');
-    activeName.classList.remove('active');
-    userContainer.remove();
-    userAlbums.remove();
-  } 
+  userAlbums.remove();
+  return userAlbums;
 }
 
 /* Создание header */
@@ -178,25 +196,16 @@ function usersInfo() {
 }
 
 async function getUsersInfo(event) {
-
       const userId = event.target.getAttribute('data-id');
-
       const info = await serverAPI.fetchUserInfo(userId);
-
       event.target.append(await renderUsersInfo(info));
-
 }
 
 async function getUsersAlbums(event) {
-
       const userId = event.target.getAttribute('data-id');
-
       const users = document.querySelector('.users');
-
       const albums = await serverAPI.fetchUserAlbums(userId);
-
       users.append(await renderUserAlbums(albums));
-
 }
 
 /* Создание блоков информации пользователя */
